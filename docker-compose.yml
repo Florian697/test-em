@@ -1,0 +1,25 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: em-backend
+    expose:
+      - "8080"
+    networks:
+      - em-net
+
+  nginx:
+    image: nginx:alpine
+    container_name: em-nginx
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - em-net
+
+networks:
+  em-net:
+    driver: bridge
